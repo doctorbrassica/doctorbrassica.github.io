@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111014">
+<!-- iOS "Add to Home Screen" runs without browser chrome -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- PWA manifest, inlined as a data: URI to keep the app one file.
+     On Android, "Add to Home Screen" then launches true fullscreen. -->
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Moorhen%20Video%20Synthesiser%22%2C%22short_name%22%3A%22Moorhen%22%2C%22description%22%3A%22Sound-reactive%20retro%20video%20effects%20for%20camera%20or%20video%20files%22%2C%22display%22%3A%22fullscreen%22%2C%22background_color%22%3A%22%23111014%22%2C%22theme_color%22%3A%22%23111014%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg%2Bxml%3Bbase64%2CPHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjZThlNGRhIi8%2BPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMiAyKSBzY2FsZSgwLjk2KSI%2BPGVsbGlwc2UgY3g9IjQ1IiBjeT0iNTAiIHJ4PSIyOCIgcnk9IjE4IiBmaWxsPSIjMWExYTFhIi8%2BPGNpcmNsZSBjeD0iNzAiIGN5PSIzOCIgcj0iMTIiIGZpbGw9IiMxYTFhMWEiLz48cGF0aCBkPSJNMjUgNDVjOCAyIDE4IDAgMjUtNSIgc3Ryb2tlPSIjMmEyYTJhIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjAgNTJjMTAgMSAyMCAwIDI4LTIiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZWxsaXBzZSBjeD0iNzgiIGN5PSIzMiIgcng9IjQiIHJ5PSI2IiBmaWxsPSIjY2MyMjIyIi8%2BPHBhdGggZD0iTTgwIDM4bDEwIDJjMiAwIDMtMSAzLTNsLTgtNGMtMi0xLTQgMC01IDJ6IiBmaWxsPSIjY2MyMjIyIi8%2BPHBhdGggZD0iTTg4IDM3bDUgMWMxIDAgMi0xIDItMmwtNC0yIiBmaWxsPSIjZjBjNzVlIi8%2BPGNpcmNsZSBjeD0iNzIiIGN5PSIzNiIgcj0iMi41IiBmaWxsPSIjY2MyMjIyIi8%2BPGNpcmNsZSBjeD0iNzIiIGN5PSIzNiIgcj0iMSIgZmlsbD0iIzFhMWExYSIvPjxwYXRoIGQ9Ik0xNyA0OGwtNSA4TTE3IDUwbC03IDVNMTcgNTJsLTYgMiIgc3Ryb2tlPSIjMWExYTFhIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zOCA2NWwtMyAxNU0zNSA4MGwtNSAzTTM1IDgwbDUgMk01MiA2M2wyIDE3TTU0IDgwbC01IDNNNTQgODBsNSAyIiBzdHJva2U9IiM5YWFiM2EiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZWxsaXBzZSBjeD0iNDUiIGN5PSI4OCIgcng9IjI1IiByeT0iNCIgc3Ryb2tlPSIjNGE5MGE0IiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPjxlbGxpcHNlIGN4PSI0NSIgY3k9Ijk0IiByeD0iMzUiIHJ5PSI1IiBzdHJva2U9IiM0YTkwYTQiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC4yNSIvPjwvZz48L3N2Zz4%3D%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image/svg%2Bxml%22%7D%5D%7D">
+<title>Moorhen Video Synthesiser</title>
+<!-- favicon: the moorhen logo on a cream chip (base64-encoded SVG) -->
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjZThlNGRhIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMiAyKSBzY2FsZSgwLjk2KSI+PGVsbGlwc2UgY3g9IjQ1IiBjeT0iNTAiIHJ4PSIyOCIgcnk9IjE4IiBmaWxsPSIjMWExYTFhIi8+PGNpcmNsZSBjeD0iNzAiIGN5PSIzOCIgcj0iMTIiIGZpbGw9IiMxYTFhMWEiLz48cGF0aCBkPSJNMjUgNDVjOCAyIDE4IDAgMjUtNSIgc3Ryb2tlPSIjMmEyYTJhIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjAgNTJjMTAgMSAyMCAwIDI4LTIiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZWxsaXBzZSBjeD0iNzgiIGN5PSIzMiIgcng9IjQiIHJ5PSI2IiBmaWxsPSIjY2MyMjIyIi8+PHBhdGggZD0iTTgwIDM4bDEwIDJjMiAwIDMtMSAzLTNsLTgtNGMtMi0xLTQgMC01IDJ6IiBmaWxsPSIjY2MyMjIyIi8+PHBhdGggZD0iTTg4IDM3bDUgMWMxIDAgMi0xIDItMmwtNC0yIiBmaWxsPSIjZjBjNzVlIi8+PGNpcmNsZSBjeD0iNzIiIGN5PSIzNiIgcj0iMi41IiBmaWxsPSIjY2MyMjIyIi8+PGNpcmNsZSBjeD0iNzIiIGN5PSIzNiIgcj0iMSIgZmlsbD0iIzFhMWExYSIvPjxwYXRoIGQ9Ik0xNyA0OGwtNSA4TTE3IDUwbC03IDVNMTcgNTJsLTYgMiIgc3Ryb2tlPSIjMWExYTFhIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zOCA2NWwtMyAxNU0zNSA4MGwtNSAzTTM1IDgwbDUgMk01MiA2M2wyIDE3TTU0IDgwbC01IDNNNTQgODBsNSAyIiBzdHJva2U9IiM5YWFiM2EiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZWxsaXBzZSBjeD0iNDUiIGN5PSI4OCIgcng9IjI1IiByeT0iNCIgc3Ryb2tlPSIjNGE5MGE0IiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9IjAuNCIvPjxlbGxpcHNlIGN4PSI0NSIgY3k9Ijk0IiByeD0iMzUiIHJ5PSI1IiBzdHJva2U9IiM0YTkwYTQiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC4yNSIvPjwvZz48L3N2Zz4=">
+<style>
+  /* ============================================================
+     STYLES
+     Retro terminal-ish chrome around the canvas. The canvas is
+     the star; everything else stays minimal.
+     ============================================================ */
+  :root {
+    --bg: #111014;
+    --panel: #1c1a22;
+    --accent: #ff5c8a;   /* 70s pink */
+    --accent2: #4dd9ff;  /* CRT cyan */
+    --text: #e8e4da;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Courier New", monospace;
+  }
+  h1 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  h1 span { color: var(--accent2); }
+
+  /* --- Moorhen branding -------------------------------------
+     The logo is mostly black, so it sits on a cream chip to stay
+     visible against the dark UI (same treatment as the favicon). */
+  .logo-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--text);
+    border-radius: 8px;
+    padding: 2px;
+    flex: none;
+  }
+  h1 .logo-chip { width: 40px; height: 40px; }
+  #brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 4px;
+  }
+  #brand .logo-chip { width: 30px; height: 30px; border-radius: 6px; }
+  #brand .brand-name {
+    font-size: 11px;
+    line-height: 1.25;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  #brand .brand-name b { color: var(--accent); display: block; }
+  #brand .brand-name i { color: var(--accent2); font-style: normal; }
+
+  /* --- stage: the fullscreen unit ---------------------------
+     Fullscreen must be requested on a WRAPPER holding both the
+     canvas and the controls — fullscreening the canvas alone would
+     leave nowhere for the HUD to render. */
+  #stage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  #stage:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    background: #000;
+  }
+  /* hide the mouse cursor in fullscreen once the HUD has faded */
+  #stage:fullscreen.idle { cursor: none; }
+
+  /* Display canvas. image-rendering:pixelated makes the CSS upscale
+     of our low-res frames crisp and chunky instead of blurry —
+     one of the two lines that create the whole 8-bit look. */
+  #display {
+    width: min(90vw, 800px);
+    aspect-ratio: 4 / 3;
+    background: #000;
+    border: 3px solid var(--panel);
+    border-radius: 6px;
+    image-rendering: pixelated;
+  }
+  /* in fullscreen: as big as fits while keeping 4:3, no chrome */
+  #stage:fullscreen #display {
+    width: min(100vw, calc(100vh * 4 / 3));
+    border: none;
+    border-radius: 0;
+  }
+
+  /* --- HUD: controls as a fade-out overlay -------------------
+     Sits over the bottom of the canvas. JS toggles .hidden; CSS
+     animates it. pointer-events:none while hidden so an invisible
+     bar never eats clicks. */
+  #hud {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    max-width: 96%;
+    transition: opacity 0.45s ease;
+  }
+  #hud.hidden { opacity: 0; pointer-events: none; }
+
+  #controls, #fx-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 12px 20px;
+    background: rgba(28, 26, 34, 0.88);   /* translucent over video */
+    border-radius: 6px;
+  }
+  #fx-bar { gap: 20px; font-size: 12px; }
+  #fx-bar .fx-title { color: var(--accent2); letter-spacing: 2px; }
+
+  button {
+    font: inherit;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 26px;
+    border: 2px solid var(--accent);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  button:hover:not(:disabled) { background: var(--accent); color: var(--bg); }
+  button:disabled { opacity: 0.4; cursor: default; }
+
+  /* recording state: solid red, gently pulsing */
+  #rec-btn.recording {
+    background: var(--accent);
+    color: var(--bg);
+    animation: rec-pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes rec-pulse { 50% { opacity: 0.55; } }
+
+  /* --- volume meter (M2) --- */
+  #meter-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+  }
+  #meter {
+    position: relative;
+    width: 180px;
+    height: 18px;
+    border: 2px solid var(--accent2);
+    border-radius: 3px;
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(90deg,
+        transparent 0 10px, rgba(0,0,0,0.55) 10px 12px); /* segment gaps */
+  }
+  #meter-fill {
+    position: absolute;
+    inset: 0;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent2) 0 60%, #ffd24d 60% 85%, var(--accent) 85% 100%);
+    background-size: 176px 100%;
+  }
+  #meter-peak {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2px;
+    left: 0%;
+    background: #fff;
+  }
+
+  /* three-band mini meter: bass pink, mid gold, treble cyan */
+  #bands {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 18px;
+  }
+  #bands i {
+    width: 5px;
+    height: 100%;
+    transform: scaleY(0.06);
+    transform-origin: bottom;
+    border-radius: 1px;
+  }
+  #band-bass   { background: var(--accent); }
+  #band-mid    { background: #ffd24d; }
+  #band-treble { background: var(--accent2); }
+
+  label { font-size: 12px; display: flex; align-items: center; gap: 6px; }
+  input[type="range"] { accent-color: var(--accent); width: 120px; }
+  input[type="checkbox"] { accent-color: var(--accent2); }
+
+  #status {
+    font-size: 13px;
+    min-height: 1.2em;
+    margin: 0;
+    padding: 4px 14px;
+    background: rgba(17, 16, 20, 0.75);
+    border-radius: 4px;
+  }
+  #status.error { color: var(--accent); }
+  #hint { font-size: 11px; opacity: 0.65; }
+
+  /* --- mobile / app-like layout -------------------------------
+     On small screens the page chrome disappears: the stage IS the
+     app, filling the whole viewport (100dvh tracks the collapsing
+     browser bars), with the picture letterboxed inside it. The HUD
+     is toggled by tapping the picture (see JS) — there's no mouse
+     to wiggle and no keyboard for SPACE/F/R. */
+  @media (max-width: 820px) {
+    body { padding: 0; gap: 0; }
+    h1 { display: none; }               /* brand lives in the HUD */
+    #stage {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      align-items: center;
+      background: #000;
+    }
+    #display {
+      width: min(100vw, calc(100dvh * 4 / 3));
+      border: none;
+      border-radius: 0;
+    }
+    #hint { display: none; }            /* keyboard hints are moot */
+
+    /* Compact HUD: wrapped control rows would blanket a portrait
+       screen (leaving no picture to tap!), so each bar becomes ONE
+       row that scrolls sideways — thumb-swipe to reach the rest. */
+    #hud {
+      width: 100%;
+      max-width: 100%;
+      gap: 8px;
+      bottom: max(10px, env(safe-area-inset-bottom));
+    }
+    #controls, #fx-bar {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      max-width: 100%;
+      justify-content: flex-start;
+      scrollbar-width: none;
+      border-radius: 0;
+    }
+    #controls::-webkit-scrollbar, #fx-bar::-webkit-scrollbar { display: none; }
+    button, label { white-space: nowrap; flex: none; }
+    #brand .brand-name { display: none; }   /* chip alone identifies us */
+    #status { font-size: 12px; text-align: center; }
+  }
+
+  /* fatter touch targets on any touch-first device */
+  @media (pointer: coarse) {
+    button { padding: 12px 18px; }
+    input[type="checkbox"] { width: 20px; height: 20px; }
+    select { padding: 8px 10px; }
+  }
+
+  /* stop double-tap-zoom hijacking fast taps on the controls */
+  button, select, input, #display { touch-action: manipulation; }
+
+  /* The <video> elements are plumbing details — we never show them.
+     display:none would pause decoding in some browsers, so hide them
+     off-screen instead. */
+  #source-video, #file-video {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+  }
+  select {
+    font: inherit;
+    font-size: 12px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--accent2);
+    border-radius: 4px;
+    padding: 4px 6px;
+  }
+  .band-sel {
+    font-size: 10px;
+    padding: 2px 3px;
+    margin-left: 4px;
+    border-color: #555;
+    color: #aaa;
+  }
+  input[type="color"] {
+    width: 26px;
+    height: 22px;
+    margin-left: 4px;
+    padding: 0;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background: none;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<!-- The moorhen logo, defined once as a reusable <symbol>; every
+     <use href="#moorhen-logo"> below stamps another copy of it. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="moorhen-logo" viewBox="0 0 100 100" fill="none">
+    <!-- Moorhen body - black -->
+    <ellipse cx="45" cy="50" rx="28" ry="18" fill="#1a1a1a"/>
+    <!-- Head -->
+    <circle cx="70" cy="38" r="12" fill="#1a1a1a"/>
+    <!-- Wing detail -->
+    <path d="M25 45c8 2 18 0 25-5" stroke="#2a2a2a" stroke-width="2" fill="none"/>
+    <!-- White flank stripe -->
+    <path d="M20 52c10 1 20 0 28-2" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <!-- Red frontal shield -->
+    <ellipse cx="78" cy="32" rx="4" ry="6" fill="#cc2222"/>
+    <!-- Beak - red with yellow tip -->
+    <path d="M80 38l10 2c2 0 3-1 3-3l-8-4c-2-1-4 0-5 2z" fill="#cc2222"/>
+    <path d="M88 37l5 1c1 0 2-1 2-2l-4-2" fill="#f0c75e"/>
+    <!-- Eye -->
+    <circle cx="72" cy="36" r="2.5" fill="#cc2222"/>
+    <circle cx="72" cy="36" r="1" fill="#1a1a1a"/>
+    <!-- Tail -->
+    <path d="M17 48l-5 8M17 50l-7 5M17 52l-6 2" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+    <!-- Legs - greenish yellow -->
+    <path d="M38 65l-3 15M35 80l-5 3M35 80l5 2M52 63l2 17M54 80l-5 3M54 80l5 2" stroke="#9aab3a" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Water ripples -->
+    <ellipse cx="45" cy="88" rx="25" ry="4" stroke="#4a90a4" stroke-width="1" opacity="0.4"/>
+    <ellipse cx="45" cy="94" rx="35" ry="5" stroke="#4a90a4" stroke-width="1" opacity="0.25"/>
+  </symbol>
+</svg>
+
+<h1>
+  <span class="logo-chip"><svg viewBox="0 0 100 100" width="36" height="36"><use href="#moorhen-logo"/></svg></span>
+  Moorhen <span>//</span> Video Synthesiser
+</h1>
+
+<!-- stage = canvas + overlay HUD; this is what goes fullscreen -->
+<div id="stage">
+  <canvas id="display" width="320" height="240"></canvas>
+
+  <div id="hud">
+    <div id="controls">
+      <span id="brand">
+        <span class="logo-chip"><svg viewBox="0 0 100 100" width="26" height="26"><use href="#moorhen-logo"/></svg></span>
+        <span class="brand-name"><b>Moorhen</b><i>Video Synth</i></span>
+      </span>
+      <button id="start-btn">Start</button>
+      <button id="stop-btn" disabled>Stop</button>
+      <button id="flip-btn" title="Switch between front and back cameras">⟲ Front</button>
+      <button id="fs-btn" title="Fullscreen (F)">⛶</button>
+      <button id="rec-btn" title="Record the output (R)">● Rec</button>
+      <button id="share-btn" hidden title="Share the last recording">Share clip</button>
+      <button id="file-btn" title="Load a video file as the source">Video…</button>
+      <input id="file-input" type="file" accept="video/*" hidden>
+      <label>Source
+        <select id="source-sel">
+          <option value="camera">Camera</option>
+          <option value="file" disabled>File</option>
+        </select>
+      </label>
+      <span id="fps">-- fps</span>
+      <span id="meter-wrap">
+        MIC
+        <span id="meter"><span id="meter-fill"></span><span id="meter-peak"></span></span>
+        <span id="bands" title="bass / mid / treble">
+          <i id="band-bass"></i><i id="band-mid"></i><i id="band-treble"></i>
+        </span>
+      </span>
+      <label>Sensitivity
+        <input id="sensitivity" type="range" min="1" max="12" step="0.5" value="4">
+      </label>
+    </div>
+
+    <!-- M4: per-effect toggles are generated from the effects array,
+         so adding an effect in JS automatically grows this bar. -->
+    <div id="fx-bar"><span class="fx-title">FX</span></div>
+
+    <p id="status">Click Start and allow camera + microphone access.</p>
+    <span id="hint">SPACE show controls · F fullscreen · R record</span>
+  </div>
+</div>
+
+<video id="source-video" playsinline muted></video>
+<!-- file source: NOT muted — its soundtrack is routed through the
+     Web Audio graph, so it both drives the effects and reaches the
+     speakers. Looped so short clips just keep going. -->
+<video id="file-video" playsinline loop></video>
+
+<script>
+"use strict";
+
+/* ==================================================================
+   MOORHEN VIDEO SYNTHESISER
+   Deployed at: https://doctorbrassica.github.io/
+   (GitHub Pages serves over https, so getUserMedia works there
+   exactly as it does on localhost.)
+
+   M5 — THE FULL SHOW (MVP complete)
+   Pipeline (see DESIGN.md §3):
+     camera → hidden <video> → WORK canvas (low-res) →
+       [effect, effect, effect…] (params ← envelope) →
+       DISPLAY canvas (crisp upscale)
+     mic → AudioContext → AnalyserNode → RMS → envelope
+
+   New in M5:
+     • RGB split (§4.4) — the 70s colour-fringing showpiece, done
+       with composite passes, no pixel loop
+     • feedback trails (§4.5) — Top-of-the-Pops ghosting, off by
+       default (it's a strong flavour)
+   Final chain order (DESIGN.md §6):
+     pixelate → posterize → RGB split → scanlines → trails
+   RGB split before scanlines so the raster overlay stays sharp;
+   trails last because they feed on the finished frame.
+   ================================================================== */
+
+/* ---------------- DOM references ---------------- */
+const video     = document.getElementById("source-video");
+const fileVideo = document.getElementById("file-video");
+const fileBtn   = document.getElementById("file-btn");
+const fileInput = document.getElementById("file-input");
+const sourceSel = document.getElementById("source-sel");
+const display   = document.getElementById("display");
+const displayCtx = display.getContext("2d");
+const startBtn  = document.getElementById("start-btn");
+const stopBtn   = document.getElementById("stop-btn");
+const statusEl  = document.getElementById("status");
+const fpsEl     = document.getElementById("fps");
+const bandEls   = {
+  bass:   document.getElementById("band-bass"),
+  mid:    document.getElementById("band-mid"),
+  treble: document.getElementById("band-treble"),
+};
+const meterFill = document.getElementById("meter-fill");
+const meterPeak = document.getElementById("meter-peak");
+const sensEl    = document.getElementById("sensitivity");
+const fxBar     = document.getElementById("fx-bar");
+const stage     = document.getElementById("stage");
+const hud       = document.getElementById("hud");
+const fsBtn     = document.getElementById("fs-btn");
+const recBtn    = document.getElementById("rec-btn");
+const flipBtn   = document.getElementById("flip-btn");
+const shareBtn  = document.getElementById("share-btn");
+
+/* ---------------- App state ---------------- */
+let mediaStream = null;   // the live camera+mic MediaStream (null when stopped)
+let rafId       = null;   // current requestAnimationFrame handle
+let frameCount  = 0;      // for the fps readout
+let lastFpsTime = 0;
+
+/* The SOURCE ABSTRACTION (DESIGN.md §3.2), now earning its keep:
+   the render loop only ever draws from `activeVideo`. A camera
+   stream and a playing file are both just <video> elements, so
+   switching source is one assignment plus audio re-routing. */
+let activeVideo = video;  // which <video> the render loop draws from
+
+/* ================= MEDIA section =================
+   Acquiring and releasing the camera + microphone.
+   getUserMedia only works in a secure context: https:// or
+   http://localhost — NOT file:// . Serve this page, don't open it. */
+
+async function start() {
+  startBtn.disabled = true;
+  setStatus("Requesting camera + microphone…");
+
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({
+      // facingMode { ideal } asks for the front/back camera on phones
+      // but degrades gracefully on laptops with only one camera.
+      video: { width: { ideal: 640 }, height: { ideal: 480 },
+               facingMode: { ideal: facing } },
+      audio: {
+        // These three "help speech" but fight music: they'd squash
+        // exactly the dynamics we want the effects to react to.
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false,
+      },
+    });
+  } catch (err) {
+    startBtn.disabled = false;
+    setStatus(friendlyMediaError(err), true);
+    return;
+  }
+
+  video.srcObject = mediaStream;
+  await video.play();
+
+  // AudioContext must be created inside the click handler's call
+  // chain (autoplay policy) — see M2 notes.
+  initMicAudio(mediaStream);
+
+  stopBtn.disabled = false;
+  setSource("camera");
+  setStatus("Live. Play music loud — and try Trails with slow hand movements.");
+  showHud();   // live now — start the auto-hide countdown
+}
+
+function stop() {
+  if (recorder) recorder.stop();   // finalise + save before tearing down
+  if (rafId !== null) cancelAnimationFrame(rafId);
+  rafId = null;
+
+  if (mediaStream) {
+    for (const track of mediaStream.getTracks()) track.stop();
+    mediaStream = null;
+  }
+  video.srcObject = null;
+  fileVideo.pause();   // file stays loaded — reselect "File" to resume
+
+  stopAudio();
+
+  displayCtx.fillStyle = "#000";
+  displayCtx.fillRect(0, 0, display.width, display.height);
+  meterFill.style.width = "0%";
+  meterPeak.style.left = "0%";
+
+  // forget the trails ghost so a restart begins clean (M5)
+  prevFrameCtx.clearRect(0, 0, WORK_W, WORK_H);
+  prevFrameValid = false;
+
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+  fpsEl.textContent = "-- fps";
+  wakeLock?.release();
+  wakeLock = null;
+  setStatus("Stopped. Click Start to go again.");
+  showHud();   // stopped — HUD stays visible (no auto-hide)
+}
+
+/* --- camera flip (mobile pass) ---------------------------------
+   Users think in "front" and "back", so the control is a two-state
+   flip, not a device list. facingMode does the matching; switching
+   is a full stop/re-request of the camera+mic (permission is already
+   granted, so it's fast). The audio graph survives untouched. */
+let facing = "user";   // "user" = front/selfie, "environment" = back
+
+async function flipCamera() {
+  facing = facing === "user" ? "environment" : "user";
+  flipBtn.textContent = facing === "user" ? "⟲ Front" : "⟲ Back";
+  if (!mediaStream) return;            // not live: applies on next Start
+  for (const track of mediaStream.getTracks()) track.stop();
+  mediaStream = null;
+  micNode?.disconnect();
+  micNode = null;
+  await start();                       // re-request with the new facing
+}
+
+function friendlyMediaError(err) {
+  switch (err.name) {
+    case "NotAllowedError":
+      return "Camera/microphone permission denied. Allow access in the browser prompt (or site settings) and try again.";
+    case "NotFoundError":
+      return "No camera or microphone found on this device.";
+    case "NotReadableError":
+      return "Camera or microphone is in use by another application.";
+    default:
+      return `Could not start capture (${err.name}). Are you on http://localhost or https?`;
+  }
+}
+
+/* ================= AUDIO section =================
+   One persistent AudioContext with an AnalyserNode tap, and two
+   switchable inputs:
+
+     mic  (MediaStreamAudioSourceNode) ──┐
+                                         ├→ AnalyserNode
+     file (MediaElementAudioSourceNode) ─┤
+                                         └→ destination (file only —
+                                            you hear the soundtrack;
+                                            the mic NEVER routes to
+                                            speakers: feedback)
+
+   The context is created once and kept for the app's lifetime.
+   This matters: createMediaElementSource() permanently binds a
+   <video> element to its context, so closing the context on Stop
+   (as earlier milestones did) would make the file's audio
+   unrecoverable. Mic hardware is still released on Stop via
+   track.stop() — nothing is held open that shouldn't be. */
+
+let audioCtx = null;
+let analyser = null;
+let micNode  = null;    // camera mode's audio input
+let fileNode = null;    // file mode's audio input (created once, ever)
+let recDest  = null;    // recording tap: whatever drives the effects
+                        // also feeds this, so recordings have sound
+let sampleBuf = null;   // reused every frame — no per-frame allocation
+let freqBuf   = null;   // FFT magnitudes, also reused every frame
+let meterMax = 0;       // slow-decaying peak for the meter's white line
+
+function ensureAudio() {
+  if (audioCtx) { audioCtx.resume(); return; }
+  // Must first be created inside a user-gesture call chain
+  // (autoplay policy) — both callers qualify: Start click, file pick.
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  audioCtx.resume();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 2048;             // 2048 samples ≈ 43 ms at 48 kHz
+  sampleBuf = new Float32Array(analyser.fftSize);
+  freqBuf = new Uint8Array(analyser.frequencyBinCount);  // 1024 FFT bins
+  recDest = audioCtx.createMediaStreamDestination();
+}
+
+function initMicAudio(stream) {
+  ensureAudio();
+  micNode = audioCtx.createMediaStreamSource(stream);
+  if (activeVideo === video) {
+    micNode.connect(analyser);
+    micNode.connect(recDest);   // recordable, but NEVER to the speakers
+  }
+}
+
+function stopAudio() {
+  // Disconnect inputs but KEEP the context (see section comment).
+  micNode?.disconnect();
+  micNode = null;
+  fileNode?.disconnect();
+  meterMax = 0;
+  for (const k in envelopes) envelopes[k] = 0;
+}
+
+/* ================= SOURCE section (new: video-file input) =======
+   Switching between camera and file is: point activeVideo at the
+   right element, route the right audio input into the analyser.
+   Camera mode = camera pixels + microphone. File mode = file pixels
+   + the file's own soundtrack (which you also hear). */
+
+function setSource(kind) {
+  if (kind === "file" && fileVideo.src) {
+    activeVideo = fileVideo;
+    micNode?.disconnect();
+    if (fileNode) {
+      fileNode.disconnect();               // avoid duplicate routes
+      fileNode.connect(analyser);          // drives the effects
+      fileNode.connect(audioCtx.destination); // reaches the speakers
+      fileNode.connect(recDest);           // reaches recordings
+    }
+    fileVideo.play().catch(() =>
+      setStatus("Browser blocked playback — press Video… and pick the file again.", true));
+    stopBtn.disabled = false;
+    startLoop();
+  } else {
+    activeVideo = video;
+    fileVideo.pause();
+    fileNode?.disconnect();
+    // NB: mic never connects to destination — that's a feedback loop.
+    micNode?.connect(analyser);            // connect() is idempotent
+    micNode?.connect(recDest);
+    if (!mediaStream) {                    // camera not running yet
+      sourceSel.value = "camera";
+      start();                             // start() re-enters setSource
+      return;
+    }
+    startLoop();
+  }
+  sourceSel.value = kind;
+}
+
+/* The render loop must run whenever EITHER source is live — it can
+   no longer assume start() (camera) was what launched it. */
+function startLoop() {
+  if (rafId !== null) return;              // already running
+  lastFpsTime = performance.now();
+  frameCount = 0;
+  rafId = requestAnimationFrame(renderLoop);
+  acquireWakeLock();                       // keep the phone screen on
+}
+
+/* Raw loudness 0–1: RMS × sensitivity, clamped. Twitchy by design. */
+function getRawLevel() {
+  if (!analyser) return 0;
+  analyser.getFloatTimeDomainData(sampleBuf);  // samples in -1..1
+  let sumSquares = 0;
+  for (let i = 0; i < sampleBuf.length; i++) {
+    sumSquares += sampleBuf[i] * sampleBuf[i];
+  }
+  const rms = Math.sqrt(sumSquares / sampleBuf.length);
+  return Math.min(1, rms * Number(sensEl.value));
+}
+
+/* --- frequency bands (new) --------------------------------------
+   The same AnalyserNode that gives us the waveform also gives us
+   the FFT: getByteFrequencyData fills freqBuf with the loudness of
+   each frequency bin (bin width = sampleRate / fftSize ≈ 23 Hz at
+   48 kHz). Averaging bins over musical ranges turns 1024 numbers
+   into three: bass (kick, bassline), mid (vocals, guitars, snare),
+   treble (hi-hats, cymbals, air). Each band gets its own envelope,
+   so the kick can crunch the pixels while the hats tear the colours
+   — independently, on the same song.
+
+   A band's value blends its AVERAGE with its PEAK bin (50/50).
+   Average alone under-reads wide bands: treble spans ~340 bins, so
+   one bright hi-hat drowns in the mean, while bass (only ~10 bins)
+   reads hot from the same energy. The peak term keeps sparse-but-
+   real energy audible to the effects; the average term stops one
+   noisy bin from dominating. BOOSTs then level the remaining
+   spectral tilt (music simply carries less energy up top). */
+const BANDS = {
+  bass:   { lo: 20,   hi: 250,   boost: 1.0 },
+  mid:    { lo: 250,  hi: 2000,  boost: 1.1 },
+  treble: { lo: 2000, hi: 10000, boost: 1.3 },
+};
+
+/* --- envelopes (M3, DESIGN.md §4.6) ---------------------------
+   Chase the raw value fast on the way up (attack), slowly on the
+   way down (decay) — beats punch in, then melt away. One envelope
+   per driver: overall level + each band. */
+const ATTACK = 0.5;
+const DECAY  = 0.04;
+const envelopes = { level: 0, bass: 0, mid: 0, treble: 0 };
+
+function chase(current, target) {
+  return current + (target - current) * (target > current ? ATTACK : DECAY);
+}
+
+function updateAudio() {
+  const raw = getRawLevel();
+  envelopes.level = chase(envelopes.level, raw);
+
+  if (analyser) {
+    analyser.getByteFrequencyData(freqBuf);          // 0–255 per bin
+    const binHz = audioCtx.sampleRate / analyser.fftSize;
+    const sens = Number(sensEl.value) / 4;           // slider default = ×1
+    for (const [name, { lo, hi, boost }] of Object.entries(BANDS)) {
+      const a = Math.max(0, Math.floor(lo / binHz));
+      const b = Math.min(freqBuf.length - 1, Math.ceil(hi / binHz));
+      let sum = 0, peak = 0;
+      for (let i = a; i <= b; i++) {
+        sum += freqBuf[i];
+        if (freqBuf[i] > peak) peak = freqBuf[i];
+      }
+      const avg = sum / (b - a + 1) / 255;
+      const value = (avg * 0.5 + (peak / 255) * 0.5) * boost * sens;
+      envelopes[name] = chase(envelopes[name], Math.min(1, value));
+    }
+  }
+  return { raw, env: envelopes };
+}
+
+/* ================= EFFECTS section =================
+   All effects mutate the WORK canvas in place. Small = fast (pixel
+   cost scales with area) and small IS the aesthetic. Each effect is
+   { name, enabled, apply(env) }; the loop runs enabled ones in
+   array order. To add an effect: write apply(), push an entry here,
+   and a toggle appears in the UI automatically. */
+
+const WORK_W = 320, WORK_H = 240;
+const work = document.createElement("canvas");
+work.width = WORK_W; work.height = WORK_H;
+const workCtx = work.getContext("2d");
+
+/* ---- 1. Pixelation (M3, DESIGN.md §4.1) ----------------------
+   Downscale-then-upscale. Block size follows the envelope:
+   quiet ≈ 2px, loud ≈ 24px. Two drawImage calls, no pixel loop. */
+const tiny = document.createElement("canvas");
+const tinyCtx = tiny.getContext("2d");
+const PIXEL_MIN_BLOCK = 2;
+const PIXEL_MAX_BLOCK = 24;
+
+function applyPixelate(env) {
+  const block = PIXEL_MIN_BLOCK + env * (PIXEL_MAX_BLOCK - PIXEL_MIN_BLOCK);
+  const tw = Math.max(1, Math.round(WORK_W / block));
+  const th = Math.max(1, Math.round(WORK_H / block));
+  if (tiny.width !== tw || tiny.height !== th) {
+    tiny.width = tw; tiny.height = th;   // resize clears + resets state
+  }
+  tinyCtx.drawImage(work, 0, 0, tw, th);          // downscale (averages)
+  workCtx.imageSmoothingEnabled = false;          // upscale (hard edges)
+  workCtx.drawImage(tiny, 0, 0, tw, th, 0, 0, WORK_W, WORK_H);
+  workCtx.imageSmoothingEnabled = true;
+}
+
+/* ---- 2. Posterization (new in M4, DESIGN.md §4.2) -------------
+   Our first pixel loop. getImageData hands us the frame as a flat
+   Uint8ClampedArray: [R,G,B,A, R,G,B,A, …] row by row. We snap each
+   colour channel to a small number of levels — loud = fewer levels
+   = harsher, more 8-bit.
+
+   Trick worth knowing: instead of doing the quantisation maths per
+   channel per pixel (320×240×3 ≈ 230k ops), build a 256-entry
+   lookup table once per frame, then every pixel is just an array
+   index. Same output, big speedup — LUTs are THE classic image-
+   processing optimisation. */
+const posterizeLUT = new Uint8ClampedArray(256);
+const POST_MAX_LEVELS = 7;   // levels per channel when silent
+const POST_MIN_LEVELS = 2;   // levels when loud (2 = harsh, poster-like)
+
+function applyPosterize(env) {
+  const levels = Math.round(POST_MAX_LEVELS - env * (POST_MAX_LEVELS - POST_MIN_LEVELS));
+  const step = 255 / (levels - 1);
+  for (let i = 0; i < 256; i++) {
+    posterizeLUT[i] = Math.round(Math.round(i / step) * step);
+  }
+  const img = workCtx.getImageData(0, 0, WORK_W, WORK_H);
+  const d = img.data;
+  for (let i = 0; i < d.length; i += 4) {
+    d[i]     = posterizeLUT[d[i]];       // R
+    d[i + 1] = posterizeLUT[d[i + 1]];   // G
+    d[i + 2] = posterizeLUT[d[i + 2]];   // B
+    // d[i+3] is alpha — leave it
+  }
+  workCtx.putImageData(img, 0, 0);
+}
+
+/* ---- 3. Scanlines + vignette (new in M4, DESIGN.md §4.3) ------
+   Pure overlay, almost free. A repeating 1×2 pattern darkens every
+   other row (the CRT raster); a radial gradient darkens the corners
+   (the curved-glass falloff). Audio nudges scanline opacity so loud
+   moments flicker slightly harder. Both painted OVER the frame —
+   which is why this effect sits last in the chain. */
+const scanPattern = (() => {
+  const p = document.createElement("canvas");
+  p.width = 1; p.height = 2;
+  const g = p.getContext("2d");
+  g.fillStyle = "#000";
+  g.fillRect(0, 1, 1, 1);                 // bottom row of each pair
+  return workCtx.createPattern(p, "repeat");
+})();
+
+const vignette = (() => {
+  const g = workCtx.createRadialGradient(
+    WORK_W / 2, WORK_H / 2, WORK_H * 0.45,
+    WORK_W / 2, WORK_H / 2, WORK_H * 0.85);
+  g.addColorStop(0, "rgba(0,0,0,0)");
+  g.addColorStop(1, "rgba(0,0,0,0.45)");
+  return g;
+})();
+
+function applyScanlines(env) {
+  workCtx.save();
+  workCtx.globalAlpha = 0.22 + env * 0.16;   // louder = darker raster
+  workCtx.fillStyle = scanPattern;
+  workCtx.fillRect(0, 0, WORK_W, WORK_H);
+  workCtx.globalAlpha = 1;
+  workCtx.fillStyle = vignette;
+  workCtx.fillRect(0, 0, WORK_W, WORK_H);
+  workCtx.restore();
+}
+
+/* ---- Edge Glow -------------------------------------------------
+   Fluorescent outlines around shapes, no pixel loop required.
+   The insight: an edge is where the image differs from itself
+   shifted one pixel over. globalCompositeOperation "difference"
+   computes |A − B| per channel on the GPU, so:
+
+     edges_h = |frame − frame shifted (1,0)|   (vertical lines)
+     edges_v = |frame − frame shifted (0,1)|   (horizontal lines)
+     edges   = edges_h + edges_v               ('lighter' = additive)
+
+   is a poor man's Sobel filter built from four drawImage calls.
+   The faint result is amplified by drawing it onto itself with
+   'lighter' (each pass doubles brightness — and acts as a soft
+   threshold, since near-black noise merely doubles to near-black
+   while true edges bloom), tinted by multiplying with a colour,
+   and screened over the frame at band-driven opacity.
+
+   Because this sits AFTER pixelate/posterize in the chain, it
+   outlines the chunky posterized shapes, not fine camera detail.
+
+   Colour: base comes from the colour picker; if a hue-driver band
+   is chosen, the band's envelope spins the base hue around the
+   colour wheel — quiet keeps your colour, loud sweeps the rainbow. */
+const edgeH = document.createElement("canvas");
+edgeH.width = WORK_W; edgeH.height = WORK_H;
+const edgeHCtx = edgeH.getContext("2d");
+const edgeV = document.createElement("canvas");
+edgeV.width = WORK_W; edgeV.height = WORK_H;
+const edgeVCtx = edgeV.getContext("2d");
+
+let edgeBaseHSL = { h: 191, s: 100, l: 65 };   // #4dd9ff, the CRT cyan
+let edgeHueBand = "off";                        // set by the hue dropdown
+
+function hexToHSL(hex) {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+  let h = 0;
+  if (d) {
+    if (max === r) h = ((g - b) / d) % 6;
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h = (h * 60 + 360) % 360;
+  }
+  const l = (max + min) / 2;
+  const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+  return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
+function applyEdgeGlow(env) {
+  if (env < 0.02) return;                       // silent: add nothing
+
+  // 1. horizontal + vertical difference-of-offsets
+  edgeHCtx.globalCompositeOperation = "source-over";
+  edgeHCtx.drawImage(work, 0, 0);
+  edgeHCtx.globalCompositeOperation = "difference";
+  edgeHCtx.drawImage(work, 1, 0);
+  edgeVCtx.globalCompositeOperation = "source-over";
+  edgeVCtx.drawImage(work, 0, 0);
+  edgeVCtx.globalCompositeOperation = "difference";
+  edgeVCtx.drawImage(work, 0, 1);
+  edgeHCtx.globalCompositeOperation = "lighter";
+  edgeHCtx.drawImage(edgeV, 0, 0);
+
+  // 2. amplify ×4 (drawing a canvas onto itself is safe: the spec
+  //    snapshots the source first)
+  edgeHCtx.drawImage(edgeH, 0, 0);
+  edgeHCtx.drawImage(edgeH, 0, 0);
+
+  // 3. tint — hue optionally spun by the hue-driver band's envelope
+  const spin = edgeHueBand === "off" ? 0 : envelopes[edgeHueBand] * 360;
+  edgeHCtx.globalCompositeOperation = "multiply";
+  edgeHCtx.fillStyle =
+    `hsl(${(edgeBaseHSL.h + spin) % 360} ${edgeBaseHSL.s}% ${edgeBaseHSL.l}%)`;
+  edgeHCtx.fillRect(0, 0, WORK_W, WORK_H);
+
+  // 4. lay the glow over the frame, opacity riding the band
+  workCtx.save();
+  workCtx.globalAlpha = Math.min(1, env * 1.2);
+  workCtx.globalCompositeOperation = "screen";
+  workCtx.drawImage(edgeH, 0, 0);
+  workCtx.restore();
+}
+
+/* ---- 4. RGB split (new in M5, DESIGN.md §4.4) ------------------
+   The analogue-TV colour-fringing look: the red image slides left,
+   blue slides right, green stays put — loud moments visibly tear
+   the picture into colours.
+
+   No pixel loop needed. Canvas compositing does it in three passes:
+     1. copy the frame to a snapshot
+     2. isolate one channel: draw snapshot, then fillRect a pure
+        colour with 'multiply' (red × red keeps R, zeroes G and B)
+     3. add the offset channel onto a black frame with 'lighter'
+        (additive: R + G + B rebuilds the full-colour image)
+   Where the offsets don't overlap, channels go missing — that IS
+   the fringe. */
+const splitSnap = document.createElement("canvas");
+splitSnap.width = WORK_W; splitSnap.height = WORK_H;
+const splitSnapCtx = splitSnap.getContext("2d");
+const chan = document.createElement("canvas");
+chan.width = WORK_W; chan.height = WORK_H;
+const chanCtx = chan.getContext("2d");
+const SPLIT_MAX = 10;   // max horizontal offset in work-canvas px
+
+function applyRgbSplit(env) {
+  const shift = Math.round(env * SPLIT_MAX);
+  if (shift === 0) return;                       // silent = untouched
+  splitSnapCtx.drawImage(work, 0, 0);
+
+  workCtx.save();
+  workCtx.fillStyle = "#000";
+  workCtx.fillRect(0, 0, WORK_W, WORK_H);        // additive base
+  workCtx.globalCompositeOperation = "lighter";
+  for (const { color, dx } of [
+    { color: "#f00", dx: -shift },
+    { color: "#0f0", dx: 0      },
+    { color: "#00f", dx: +shift },
+  ]) {
+    chanCtx.globalCompositeOperation = "source-over";
+    chanCtx.drawImage(splitSnap, 0, 0);
+    chanCtx.globalCompositeOperation = "multiply";
+    chanCtx.fillStyle = color;
+    chanCtx.fillRect(0, 0, WORK_W, WORK_H);
+    workCtx.drawImage(chan, dx, 0);
+  }
+  workCtx.restore();
+}
+
+/* ---- 5. Feedback trails (new in M5, DESIGN.md §4.5) ------------
+   Video feedback, the 70s pop-video staple: keep a copy of last
+   frame's FINISHED output and paint it back over this frame,
+   slightly enlarged, before saving the new result. Every frame the
+   ghost is re-drawn at `persist` opacity, so it decays by that
+   factor per frame — persist 0.5 dies in a blink, 0.92 smears for
+   about a second. Louder = longer smears. The slight zoom makes
+   ghosts bloom outward instead of sitting still.
+
+   Off by default: it's gorgeous with slow hand movements but can
+   swallow the other effects. Toggle it on and wave. */
+const prevFrame = document.createElement("canvas");
+prevFrame.width = WORK_W; prevFrame.height = WORK_H;
+const prevFrameCtx = prevFrame.getContext("2d");
+let prevFrameValid = false;
+const TRAIL_ZOOM = 4;   // px the ghost grows per frame
+
+function applyTrails(env) {
+  if (prevFrameValid) {
+    const persist = 0.5 + env * 0.42;            // 0.5 quiet → 0.92 loud
+    workCtx.save();
+    workCtx.globalAlpha = persist;
+    workCtx.drawImage(prevFrame,
+      -TRAIL_ZOOM, -TRAIL_ZOOM * (WORK_H / WORK_W),
+      WORK_W + TRAIL_ZOOM * 2, WORK_H + TRAIL_ZOOM * 2 * (WORK_H / WORK_W));
+    workCtx.restore();
+  }
+  prevFrameCtx.drawImage(work, 0, 0);            // save finished frame
+  prevFrameValid = true;
+}
+
+/* ---- the chain (order matters — see header comment) ----------
+   Each effect declares which audio driver moves it: a frequency
+   band or the overall level. The defaults are the choreography —
+   kick drum crunches the pixels, vocals posterize, hi-hats tear
+   the colours apart — and every one is reassignable in the UI. */
+const effects = [
+  { name: "Pixelate",  enabled: true,  band: "bass",   apply: applyPixelate },
+  { name: "Posterize", enabled: true,  band: "mid",    apply: applyPosterize },
+  { name: "RGB Split", enabled: true,  band: "treble", apply: applyRgbSplit },
+  { name: "Edge Glow", enabled: true,  band: "treble", apply: applyEdgeGlow },
+  { name: "Scanlines", enabled: true,  band: "level",  apply: applyScanlines },
+  { name: "Trails",    enabled: false, band: "level",  apply: applyTrails },
+];
+
+/* ================= RECORDING section (new) ======================
+   canvas.captureStream() turns a canvas into a live video track;
+   MediaRecorder encodes tracks to webm in the browser, no server.
+
+   We do NOT record the display canvas — its backing store is only
+   320×240. Instead a dedicated recording canvas gets the same
+   smoothing-off upscale at 4× (1280×960), drawn only while
+   recording, so files are watchable-size and the pixels stay crisp.
+   Audio: recDest carries whichever source is live (mic or file
+   soundtrack), so recordings are already in sync. */
+
+const REC_SCALE = 4;
+const recCanvas = document.createElement("canvas");
+recCanvas.width  = WORK_W * REC_SCALE;    // 1280
+recCanvas.height = WORK_H * REC_SCALE;    // 960
+const recCtx = recCanvas.getContext("2d");
+recCtx.imageSmoothingEnabled = false;     // persists (canvas never resized)
+
+let recorder = null;
+const recChunks = [];
+let lastRecording = null;   // File handed to the share sheet on mobile
+
+function toggleRecord() {
+  if (recorder) { recorder.stop(); return; }   // finish + save
+  if (rafId === null) {
+    setStatus("Start the camera or load a video before recording.", true);
+    return;
+  }
+
+  const stream = recCanvas.captureStream(30);
+  if (recDest) {
+    for (const t of recDest.stream.getAudioTracks()) stream.addTrack(t);
+  }
+
+  // Best codec the browser offers, most-preferred first.
+  const mime = [
+    "video/webm;codecs=vp9,opus",
+    "video/webm;codecs=vp8,opus",
+    "video/webm",
+  ].find(m => MediaRecorder.isTypeSupported(m)) || "";
+
+  recorder = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+  recChunks.length = 0;
+  recorder.ondataavailable = (e) => { if (e.data.size) recChunks.push(e.data); };
+  recorder.onstop = () => {
+    const type = recorder.mimeType || "video/webm";
+    recorder = null;
+    recBtn.classList.remove("recording");
+    recBtn.textContent = "● Rec";
+
+    const blob = new Blob(recChunks, { type });
+    recChunks.length = 0;
+    const name = "moorhen-" +
+      new Date().toISOString().slice(0, 19).replace(/[T:]/g, "-") + ".webm";
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;                        // triggers a download
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    setStatus(`Saved ${name} (${(blob.size / 1048576).toFixed(1)} MB) to your downloads.`);
+
+    // Mobile: offer the share sheet too. navigator.share needs a
+    // fresh user gesture, so it can't run here — instead a Share
+    // button appears and the user's tap provides the gesture.
+    lastRecording = new File([blob], name, { type });
+    shareBtn.hidden = !navigator.canShare?.({ files: [lastRecording] });
+  };
+
+  recorder.start(250);   // deliver data in 250ms chunks
+  recBtn.classList.add("recording");
+  recBtn.textContent = "■ 0:00";
+  recStartedAt = performance.now();
+  setStatus("Recording — press the red button (or R) to stop and save.");
+}
+
+/* live duration readout on the button while recording */
+let recStartedAt = 0;
+function updateRecButton(now) {
+  if (!recorder) return;
+  const s = Math.floor((now - recStartedAt) / 1000);
+  recBtn.textContent = `■ ${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+}
+
+/* ================= RENDER LOOP section =================
+   Once per screen refresh:
+     1. audio → envelope
+     2. video frame → work canvas
+     3. enabled effects mutate the work canvas, in order
+     4. work → display, smoothing OFF (the other half of the 8-bit look)
+     5. meter + fps */
+
+function renderLoop(now) {
+  const { raw, env } = updateAudio();
+
+  if (activeVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+    // Whatever aspect the source has, it's stretched to the 4:3 work
+    // canvas — a period-appropriate crime the effects then commit to.
+    // The front camera is mirrored (as every camera app does) so your
+    // movements feel natural; recordings keep the mirror — it's what
+    // the performer saw.
+    if (activeVideo === video && facing === "user") {
+      workCtx.save();
+      workCtx.scale(-1, 1);
+      workCtx.drawImage(video, -WORK_W, 0, WORK_W, WORK_H);
+      workCtx.restore();
+    } else {
+      workCtx.drawImage(activeVideo, 0, 0, WORK_W, WORK_H);
+    }
+
+    for (const fx of effects) {
+      if (fx.enabled) fx.apply(env[fx.band]);   // each dances to its own driver
+    }
+
+    displayCtx.imageSmoothingEnabled = false;
+    displayCtx.drawImage(work, 0, 0, display.width, display.height);
+
+    // recording tap: same frame, 4× crisp upscale (only while recording)
+    if (recorder) {
+      recCtx.drawImage(work, 0, 0, recCanvas.width, recCanvas.height);
+    }
+  }
+  updateRecButton(now);
+
+  // meter: bar = raw (what the mic hears), white line = slow peak
+  meterFill.style.width = (raw * 100).toFixed(1) + "%";
+  meterMax = Math.max(raw, meterMax * 0.995);
+  meterPeak.style.left = (meterMax * 100).toFixed(1) + "%";
+
+  // three-band mini meter (bass / mid / treble)
+  bandEls.bass.style.transform   = `scaleY(${Math.max(0.06, env.bass)})`;
+  bandEls.mid.style.transform    = `scaleY(${Math.max(0.06, env.mid)})`;
+  bandEls.treble.style.transform = `scaleY(${Math.max(0.06, env.treble)})`;
+
+  // debug hook — inspect in DevTools console: DEBUG
+  window.DEBUG = { raw, level: env.level, bass: env.bass, mid: env.mid, treble: env.treble };
+
+  frameCount++;
+  if (now - lastFpsTime >= 1000) {
+    fpsEl.textContent = `${frameCount} fps`;
+    frameCount = 0;
+    lastFpsTime = now;
+  }
+
+  rafId = requestAnimationFrame(renderLoop);
+}
+
+/* ================= UI section ================= */
+
+function setStatus(msg, isError = false) {
+  statusEl.textContent = msg;
+  statusEl.classList.toggle("error", isError);
+}
+
+// Generate one toggle + band selector per effect from the array.
+for (const fx of effects) {
+  const id = fx.name.toLowerCase().replace(/\s+/g, "-");
+  const label = document.createElement("label");
+  const box = document.createElement("input");
+  box.type = "checkbox";
+  box.checked = fx.enabled;
+  box.id = "fx-" + id;
+  box.addEventListener("change", () => { fx.enabled = box.checked; });
+
+  const sel = document.createElement("select");
+  sel.className = "band-sel";
+  sel.id = "band-" + id;
+  sel.title = "What drives " + fx.name;
+  for (const b of ["level", "bass", "mid", "treble"]) {
+    const opt = document.createElement("option");
+    opt.value = b;
+    opt.textContent = b;
+    sel.append(opt);
+  }
+  sel.value = fx.band;
+  sel.addEventListener("change", () => { fx.band = sel.value; });
+
+  label.append(box, " " + fx.name, sel);
+
+  // Edge Glow's extra controls: base-colour picker (native popup)
+  // and a hue-driver dropdown that spins the colour with a band.
+  if (fx.name === "Edge Glow") {
+    const colour = document.createElement("input");
+    colour.type = "color";
+    colour.value = "#4dd9ff";
+    colour.id = "colour-edge-glow";
+    colour.title = "Edge glow base colour";
+    colour.addEventListener("input", () => {
+      edgeBaseHSL = hexToHSL(colour.value);
+    });
+
+    const hue = document.createElement("select");
+    hue.className = "band-sel";
+    hue.id = "hue-edge-glow";
+    hue.title = "Band that spins the glow colour (off = fixed colour)";
+    for (const b of ["off", "bass", "mid", "treble"]) {
+      const opt = document.createElement("option");
+      opt.value = b;
+      opt.textContent = "hue:" + b;
+      hue.append(opt);
+    }
+    hue.value = edgeHueBand;
+    hue.addEventListener("change", () => { edgeHueBand = hue.value; });
+
+    label.append(colour, hue);
+  }
+  fxBar.append(label);
+}
+
+startBtn.addEventListener("click", start);
+stopBtn.addEventListener("click", stop);
+
+/* --- video-file loading ---------------------------------------- */
+fileBtn.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", () => {
+  const f = fileInput.files[0];
+  if (!f) return;
+  ensureAudio();   // we're inside a user-gesture chain: allowed
+
+  // swap in the new file (releasing any previous object URL)
+  if (fileVideo.dataset.url) URL.revokeObjectURL(fileVideo.dataset.url);
+  const url = URL.createObjectURL(f);
+  fileVideo.dataset.url = url;
+  fileVideo.src = url;
+
+  // bind the element's audio into the graph — ONCE, ever (see AUDIO)
+  if (!fileNode) fileNode = audioCtx.createMediaElementSource(fileVideo);
+
+  sourceSel.querySelector('option[value="file"]').disabled = false;
+  setSource("file");
+  setStatus(`Playing "${f.name}" on loop — its soundtrack drives the effects.`);
+});
+
+sourceSel.addEventListener("change", () => setSource(sourceSel.value));
+
+/* --- HUD auto-hide (video-player pattern) ----------------------
+   While live, the HUD fades out after a short idle period and comes
+   back on mouse movement or SPACE. While stopped it never hides —
+   you should always be able to find the Start button. Hovering the
+   HUD holds it open (you're clearly using it). */
+const HUD_TIMEOUT_MS = 2600;
+let hudTimer = null;
+let hudHovered = false;
+
+function showHud() {
+  hud.classList.remove("hidden");
+  stage.classList.remove("idle");
+  clearTimeout(hudTimer);
+  if (rafId !== null && !hudHovered) {       // only auto-hide while live (either source)
+    hudTimer = setTimeout(() => {
+      hud.classList.add("hidden");
+      stage.classList.add("idle");           // fullscreen: hide cursor too
+    }, HUD_TIMEOUT_MS);
+  }
+}
+
+function hideHud() {
+  clearTimeout(hudTimer);
+  hud.classList.add("hidden");
+  stage.classList.add("idle");
+}
+
+// Mouse: wiggling reveals the HUD (desktop behaviour).
+// Touch: tapping the picture TOGGLES it — the video-player pattern —
+// because on a phone there's no mouse to wiggle and no keyboard.
+// Using pointer events lets one listener tell the two apart (a touch
+// tap also fires a synthetic mousemove, which would fight the toggle).
+stage.addEventListener("pointermove", (e) => {
+  if (e.pointerType === "mouse") showHud();
+});
+stage.addEventListener("pointerup", (e) => {
+  if (e.pointerType !== "touch") return;
+  // Toggle on taps that hit the picture, the letterbox, or the HUD's
+  // empty gaps — but never on taps that landed on an actual control.
+  if (e.target === display || e.target === stage || e.target === hud) {
+    if (hud.classList.contains("hidden")) showHud();
+    else hideHud();
+  }
+});
+// Hover-hold must be MOUSE-ONLY: a touch tap fires synthetic
+// mouseenter but never mouseleave, which would wedge the HUD open
+// forever after the first tap on any control.
+hud.addEventListener("pointerenter", (e) => {
+  if (e.pointerType === "mouse") { hudHovered = true; showHud(); }
+});
+hud.addEventListener("pointerleave", (e) => {
+  if (e.pointerType === "mouse") { hudHovered = false; showHud(); }
+});
+
+/* --- screen wake lock (mobile pass) -----------------------------
+   Phones dim and lock mid-performance otherwise. Re-acquired on tab
+   return (the lock is auto-released when the tab is hidden). */
+let wakeLock = null;
+async function acquireWakeLock() {
+  try { wakeLock = await navigator.wakeLock?.request("screen"); }
+  catch { /* unsupported or denied — not worth bothering the user */ }
+}
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && rafId !== null) acquireWakeLock();
+});
+
+/* --- fullscreen (on the stage wrapper, never the bare canvas) --- */
+function toggleFullscreen() {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    stage.requestFullscreen();
+  }
+}
+fsBtn.addEventListener("click", toggleFullscreen);
+document.addEventListener("fullscreenchange", () => {
+  fsBtn.title = document.fullscreenElement ? "Exit fullscreen (F)" : "Fullscreen (F)";
+  showHud();
+});
+
+/* --- keyboard: SPACE pops the HUD, F toggles fullscreen --------
+   Buttons and checkboxes are blurred after clicks (below) so that
+   SPACE always reaches us here instead of re-triggering whichever
+   control was clicked last — a classic focus gotcha. */
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") {
+    e.preventDefault();                      // don't scroll the page
+    showHud();
+  } else if (e.code === "KeyF") {
+    toggleFullscreen();
+  } else if (e.code === "KeyR") {
+    toggleRecord();
+    showHud();
+  }
+});
+recBtn.addEventListener("click", toggleRecord);
+flipBtn.addEventListener("click", flipCamera);
+shareBtn.addEventListener("click", () => {
+  if (!lastRecording) return;
+  navigator.share({ files: [lastRecording], title: "Moorhen Video Synth" })
+    .catch(() => { /* user cancelled the sheet — fine */ });
+});
+document.addEventListener("click", (e) => {
+  if (e.target.matches("button, input[type=checkbox]")) e.target.blur();
+});
+
+// Guard for very old browsers / file:// pages where mediaDevices is absent
+if (!navigator.mediaDevices?.getUserMedia) {
+  startBtn.disabled = true;
+  setStatus("This browser/context doesn't support media capture. Serve the page over http://localhost or https.", true);
+}
+</script>
+</body>
+</html>
